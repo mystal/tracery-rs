@@ -1,13 +1,10 @@
-use lazy_static::lazy_static;
 use rand::{seq::SliceRandom, Rng};
 use std::collections::BTreeMap;
 use std::rc::Rc;
 
 use crate::{parser::parse_str, Error, Execute, Result, Rule};
 
-lazy_static! {
-    pub(crate) static ref ORIGIN: String = String::from("origin");
-}
+pub(crate) static ORIGIN: &str = "origin";
 
 #[cfg(feature = "tracery_json")]
 #[derive(Debug, serde::Deserialize)]
@@ -35,6 +32,7 @@ impl JsonRuleSet {
 #[derive(Clone)]
 pub struct Grammar {
     map: BTreeMap<String, Vec<Vec<Rule>>>,
+    // TODO: Can we use a Cow<String>?
     default_rule: String,
     modifier_registry: BTreeMap<String, Rc<dyn Fn(&str) -> String>>,
 }
@@ -116,7 +114,7 @@ impl Grammar {
 
         Ok(Grammar {
             map,
-            default_rule: ORIGIN.clone(),
+            default_rule: ORIGIN.to_string(),
             modifier_registry: crate::modifiers::get_default_modifiers(),
         })
     }
@@ -271,13 +269,13 @@ impl Grammar {
     /// ```
     ///
     /// [`flatten`]: struct.Grammar.html#method.flatten
-    pub fn execute<R>(&mut self, key: &String, rng: &mut R) -> Result<String>
+    pub fn execute<R>(&mut self, key: &str, rng: &mut R) -> Result<String>
     where
         R: ?Sized + Rng,
     {
         let rule = match self.map.get(key) {
             Some(rules) => Ok(rules.last().unwrap().choose(rng).unwrap().clone()),
-            None => Err(Error::MissingKeyError(key.clone())),
+            None => Err(Error::MissingKeyError(key.to_string())),
         }?;
         rule.execute(self, rng)
     }
@@ -342,7 +340,7 @@ impl Grammar {
 
         Ok(Grammar {
             map,
-            default_rule: ORIGIN.clone(),
+            default_rule: ORIGIN.to_string(),
             modifier_registry: crate::modifiers::get_default_modifiers(),
         })
     }

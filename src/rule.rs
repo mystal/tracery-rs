@@ -3,11 +3,7 @@ use crate::Grammar;
 use crate::Node;
 use crate::Result;
 
-use lazy_static::lazy_static;
-
-lazy_static! {
-    static ref POP: String = String::from("POP");
-}
+static POP: &str = "POP";
 
 #[derive(Debug, Clone, PartialEq)]
 pub(crate) struct Rule(pub(crate) Vec<Node>);
@@ -18,7 +14,8 @@ impl Rule {
     }
 
     pub(crate) fn is_pop(&self) -> bool {
-        self.0.len() == 1 && self.0.first().unwrap().text() == Some(&POP)
+        // TODO: Clean this up.
+        self.0.len() == 1 && matches!(self.0.first().unwrap().text(), Some(text) if text == POP)
     }
 }
 
