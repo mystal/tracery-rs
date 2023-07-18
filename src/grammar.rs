@@ -9,6 +9,24 @@ lazy_static! {
     pub(crate) static ref ORIGIN: String = String::from("origin");
 }
 
+#[cfg(feature = "tracery_json")]
+#[derive(Debug, serde::Deserialize)]
+#[serde(untagged)]
+enum JsonRuleSet {
+    List(Vec<String>),
+    Single(String),
+}
+
+#[cfg(feature = "tracery_json")]
+impl JsonRuleSet {
+    fn to_vec(self) -> Vec<String> {
+        match self {
+            Self::List(rules) => rules,
+            Self::Single(rule) => vec![rule],
+        }
+    }
+}
+
 /// Represents a single, complete tracery grammar.
 ///
 /// See the [`crate-level documentation`] for a usage overview.
@@ -88,9 +106,10 @@ impl Grammar {
     /// [`Grammar`]: struct.Grammar.html
     #[cfg(feature = "tracery_json")]
     pub fn from_json<S: AsRef<str>>(s: S) -> Result<Grammar> {
-        let source: BTreeMap<String, Vec<String>> = serde_json::from_str(s.as_ref())?;
+        let source: BTreeMap<String, JsonRuleSet> = serde_json::from_str(s.as_ref())?;
+        let source = source.into_iter().map(|(name, value)| (name, value.to_vec()));
         let mut map: BTreeMap<String, Vec<Vec<Rule>>> = BTreeMap::new();
-        for (key, value) in source.into_iter() {
+        for (key, value) in source {
             let rules: Vec<Rule> = value.iter().map(parse_str).collect::<Result<Vec<_>>>()?;
             map.insert(key, vec![rules]);
         }

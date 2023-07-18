@@ -358,9 +358,7 @@ macro_rules! grammar {
 /// [`Grammar`]: struct.Grammar.html
 #[cfg(feature = "tracery_json")]
 pub fn from_json<S: AsRef<str>>(s: S) -> Result<Grammar> {
-    use std::collections::HashMap;
-    let map: HashMap<String, Vec<String>> = serde_json::from_str(s.as_ref())?;
-    Grammar::from_map(map)
+    Grammar::from_json(s)
 }
 
 /// Creates a new grammar from an input map
@@ -533,7 +531,7 @@ mod tests {
                 "name": ["Arjun","Yuuma","Darcy","Mia","Chiaki","Izzi","Azra","Lina"],
                 "animal": ["unicorn","raven","sparrow","scorpion","coyote","eagle","owl","lizard","zebra","duck","kitten"],
                 "mood": ["vexed","indignant","impassioned","wistful","astute","courteous"],
-                "story": ["#hero# traveled with her pet #heroPet#.  #hero# was never #mood#, for the #heroPet# was always too #mood#."],
+                "story": "#hero# traveled with her pet #heroPet#.  #hero# was never #mood#, for the #heroPet# was always too #mood#.",
                 "origin": ["#[hero:#name#][heroPet:#animal#]story#"]
             }"##;
         let g = from_json(source)?;
