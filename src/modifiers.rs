@@ -10,7 +10,7 @@ pub(crate) fn get_default_modifiers() -> BTreeMap<String, Rc<dyn Fn(&str) -> Str
         let u = iter.next().map(|c| c.to_uppercase().to_string());
         format!(
             "{}{}",
-            u.unwrap_or_else(String::default),
+            u.unwrap_or_default(),
             iter.collect::<String>()
         )
     };
@@ -41,13 +41,10 @@ pub(crate) fn get_default_modifiers() -> BTreeMap<String, Rc<dyn Fn(&str) -> Str
     );
     modifiers.insert(
         "s".into(),
-        Rc::new(|s: &str| pluralize::to_plural(s)) as Rc<dyn Fn(&str) -> String>,
+        Rc::new(pluralize::to_plural) as Rc<dyn Fn(&str) -> String>,
     );
     let is_vowel = |c: char| -> bool {
-        match c {
-            'a' | 'e' | 'i' | 'o' | 'u' => true,
-            _ => false,
-        }
+        matches!(c, 'a' | 'e' | 'i' | 'o' | 'u')
     };
     modifiers.insert(
         "a".into(),

@@ -16,7 +16,7 @@ enum JsonRuleSet {
 
 #[cfg(feature = "tracery_json")]
 impl JsonRuleSet {
-    fn to_vec(self) -> Vec<String> {
+    fn into_vec(self) -> Vec<String> {
         match self {
             Self::List(rules) => rules,
             Self::Single(rule) => vec![rule],
@@ -105,7 +105,7 @@ impl Grammar {
     #[cfg(feature = "tracery_json")]
     pub fn from_json<S: AsRef<str>>(s: S) -> Result<Grammar> {
         let source: BTreeMap<String, JsonRuleSet> = serde_json::from_str(s.as_ref())?;
-        let source = source.into_iter().map(|(name, value)| (name, value.to_vec()));
+        let source = source.into_iter().map(|(name, value)| (name, value.into_vec()));
         let mut map: BTreeMap<String, Vec<Vec<Rule>>> = BTreeMap::new();
         for (key, value) in source {
             let rules: Vec<Rule> = value.iter().map(parse_str).collect::<Result<Vec<_>>>()?;
