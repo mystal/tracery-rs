@@ -1,0 +1,19 @@
+{
+  "origin": [
+    "In cell #cell#, there is #trait.a# #object# that #verb#.",
+    "Cell #cell# holds #object.a# that #verb#.",
+    "[CODE #code.uppercase#] #organization# #orgAction# #trait.a# #object# in the #location#. Class #letter.capitalize# personnel must report immediately."
+  ],
+  "cell": ["#number##number##number##letter#", "#letter.capitalize##number##number#"],
+  "number": ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"],
+  "letter": ["a", "b", "c", "e", "h", "j", "k", "q", "r", "w", "x", "y", "z"],
+  "object": ["anchor", "shoe", "floppy disk", "ice cube", "refrigerator", "cash register", "pair of pants"],
+  "verb": ["eats #target#", "levitates", "screams", "dances with #target#", "writes #writing# #target#", "admires #target#", "mourns #target#", "throws #target#", "dreams of #target#", "listens to #target#"],
+  "writing": ["fanfiction about", "poetry in honor of", "memos about", "letters to", "novels for"],
+  "target": ["dogs", "time", "cake", "the sky", "buildings", "water", "chairs", "cats", "plants", "tiles", "colors", "glass", "people", "music"],
+  "trait": ["unsettling", "mischievous", "glowing", "tiny", "enormous", "unremarkable", "floating", "determined", "burning", "red", "wooden", "handsome", "charming"],
+  "organization": ["The Organization", "The Bureau", "The Agency", "The Institute", "The Firm"],
+  "location": ["Maintenance Sector", "Containment Sector", "Research Sector", "Nostalgia Department", "Ritual Division", "Janitorial Department"],
+  "orgAction": ["has misplaced", "is tracking"],
+  "code": ["Omega", "Alpha", "Beta", "Delta"]
+}
