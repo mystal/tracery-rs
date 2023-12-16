@@ -113,6 +113,17 @@ pub(crate) fn get_default_modifiers() -> BTreeMap<String, Rc<dyn Fn(&str) -> Str
             format!("{}{}{}", prefix, first, rest,)
         }) as Rc<dyn Fn(&str) -> String>,
     );
+
+    // Non-standard, but useful modifiers.
+    modifiers.insert(
+        "uppercase".into(),
+        Rc::new(move |s: &str| s.to_uppercase())
+    );
+    modifiers.insert(
+        "lowercase".into(),
+        Rc::new(move |s: &str| s.to_lowercase())
+    );
+
     modifiers
 }
 
